@@ -321,9 +321,13 @@ def evaluate(
         "ate": ate(est, gt, mode=align, with_scale=with_scale),
         "ave": ave(est, gt, frame=ave_frame, mode=ave_align, with_scale=with_scale),
     }
-    # The complementary view is cheap and often reveals frame mistakes.
+    # The complementary view is cheap and often reveals frame mistakes, but it
+    # needs ground-truth attitude: skip it rather than fail the whole evaluation.
     alt_frame = "body" if ave_frame == "world" else "world"
-    out["ave_alt"] = ave(est, gt, frame=alt_frame, mode="none" if alt_frame == "body" else ave_align)
+    if alt_frame == "body" and not gt.has_orientation:
+        out["ave_alt"] = None
+    else:
+        out["ave_alt"] = ave(est, gt, frame=alt_frame, mode="none" if alt_frame == "body" else ave_align)
     if include_rpe:
         out["rpe"] = rpe(est, gt, delta=rpe_delta)
     return out

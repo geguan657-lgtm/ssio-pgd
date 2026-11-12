@@ -58,10 +58,13 @@ ssio-pgd/
 │   ├── run_baseline.ps1    一键体检
 │   ├── verify_data.py      数据体检（单位/丢帧/四元数）
 │   └── get_data.py         下载或导入已下载的数据
+├── tools/dump_ssio_traj.py 把官方模型输出导成 CSV（官方评测不落盘轨迹）
 ├── tests/                  19 个已知答案测试
 ├── configs/                评测配置 + 下载清单
 ├── docs/METRICS.md         ← 报数字之前必须读
 ├── docs/DATA.md            ← 下数据之前必须读
+├── docs/SETUP.md           ← 环境搭建实录（含踩过的坑）
+├── docs/PLAN.md            12 周计划
 ├── paper.md                论文骨架（第 1 周就要写）
 ├── baseline.md             复现基线（W4 冻结）
 ├── diagnosis.md            W5 诊断报告

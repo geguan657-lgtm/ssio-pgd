@@ -109,7 +109,10 @@ def cmd_eval(args: argparse.Namespace) -> int:
     )
     _print_block("ATE (position)", result["ate"])
     _print_block(f"AVE (velocity, frame={args.ave_frame})", result["ave"])
-    _print_block("AVE (complementary view)", result["ave_alt"])
+    if result.get("ave_alt"):
+        _print_block("AVE (complementary view)", result["ave_alt"])
+    else:
+        print("\n== AVE (complementary view) ==\n  skipped: ground truth has no orientation")
     if "rpe" in result:
         _print_block("RPE", result["rpe"])
 
