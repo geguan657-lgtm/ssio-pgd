@@ -28,31 +28,16 @@ runs:
     gt: runs/synth/gt.csv
     est: runs/synth/est.csv
 
-  # ---- EuRoC (uncomment once the data and your predictions exist) ---------
+  # ---- EuRoC (V1_01_easy is on disk; the other four still need downloading) --
+  - dataset: euroc
+    seq: V1_01_easy
+    gt: data/euroc/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv
+    est: runs/baseline/V1_01_easy.csv
+
   # - dataset: euroc
   #   seq: MH_02_easy
   #   gt: data/euroc/MH_02_easy/mav0/state_groundtruth_estimate0/data.csv
   #   est: runs/baseline/MH_02_easy.csv
-  #
-  # - dataset: euroc
-  #   seq: MH_04_difficult
-  #   gt: data/euroc/MH_04_difficult/mav0/state_groundtruth_estimate0/data.csv
-  #   est: runs/baseline/MH_04_difficult.csv
-  #
-  # - dataset: euroc
-  #   seq: V1_01_easy
-  #   gt: data/euroc/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv
-  #   est: runs/baseline/V1_01_easy.csv
-  #
-  # - dataset: euroc
-  #   seq: V1_03_difficult
-  #   gt: data/euroc/V1_03_difficult/mav0/state_groundtruth_estimate0/data.csv
-  #   est: runs/baseline/V1_03_difficult.csv
-  #
-  # - dataset: euroc
-  #   seq: V2_02_medium
-  #   gt: data/euroc/V2_02_medium/mav0/state_groundtruth_estimate0/data.csv
-  #   est: runs/baseline/V2_02_medium.csv
 
   # ---- TLIO (35 h total; start with the 2-3 h subset) ---------------------
   # - dataset: tlio

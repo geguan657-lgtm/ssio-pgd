@@ -156,8 +156,13 @@ def cmd_batch(args: argparse.Namespace) -> int:
         return 2
 
     rows = []
+    pending = 0
     for r in runs:
         seq = r.get("seq") or r.get("name") or Path(r["gt"]).parent.name
+        if not Path(r["est"]).exists():
+            print(f"[todo] {seq:<28s} no prediction yet at {r['est']}")
+            pending += 1
+            continue
         try:
             est = load_trajectory(r["est"], time_unit=args.time_unit or "auto")
             gt = load_trajectory(r["gt"])
@@ -193,6 +198,8 @@ def cmd_batch(args: argparse.Namespace) -> int:
     ok = [r for r in rows if "error" not in r]
     if ok:
         print(f"mean AVE over {len(ok)} sequences: {np.mean([r['ave_mean'] for r in ok]):.4f} m/s")
+    if pending:
+        print(f"{pending} sequence(s) awaiting predictions (not an error)")
     return 0 if len(ok) == len(rows) else 1
 
 
