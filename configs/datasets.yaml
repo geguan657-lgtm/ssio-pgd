@@ -22,9 +22,10 @@ reference:
 
 runs:
   # ---- self-test: works before any dataset is downloaded -------------------
+  # Generate the inputs first:  python -m ssio_eval.cli synth --out runs\synth
   - dataset: selftest
     seq: MH_00
-    gt: data/_selftest/euroc/MH_00/mav0/state_groundtruth_estimate0/data.csv
+    gt: runs/synth/gt.csv
     est: runs/synth/est.csv
 
   # ---- EuRoC (uncomment once the data and your predictions exist) ---------

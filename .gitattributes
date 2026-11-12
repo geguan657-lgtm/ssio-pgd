@@ -1,0 +1,19 @@
+# Keep line endings deterministic so `git diff` never shows a whole-file change
+# just because Windows checked the file out with CRLF.
+* text=auto eol=lf
+
+# Windows scripts must stay CRLF to run in Windows PowerShell 5.1.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary-ish artefacts
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.zip binary
+*.npy binary
+*.npz binary
+*.pt binary
+*.pth binary
