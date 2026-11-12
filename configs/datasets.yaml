@@ -1,0 +1,60 @@
+# Batch evaluation config.
+#
+#   python -m ssio_eval.cli batch --config configs/datasets.yaml --out runs/batch.csv
+#
+# `runs` is what actually gets evaluated. Until your own predictions exist, only
+# the self-test row is active so the command always does something meaningful.
+
+defaults:
+  align: se3          # ATE alignment: none | yaw | se3
+  ave_frame: body     # body = alignment-free, the honest default
+  rpe_delta: 1.0      # metres per RPE segment
+
+# Numbers transcribed from the SSIO write-up; verify against Table 2 of
+# arXiv:2610.25988 before you put them in a paper.
+reference:
+  TLIO:      {supervised_ave: 0.084, ssio_pgd_ave: 0.100}
+  EuRoC:     {supervised_ave: 0.344, ssio_pgd_ave: 0.401}
+  Blackbird: {supervised_ave: 0.362, ssio_pgd_ave: 0.430}
+  MIPO:      {supervised_ave: 0.121, ssio_pgd_ave: 0.166}
+  GrandTour: {supervised_ave: 0.070, ssio_pgd_ave: 0.095}
+  Humanoid:  {supervised_ave: 0.096, ssio_pgd_ave: 0.148}
+
+runs:
+  # ---- self-test: works before any dataset is downloaded -------------------
+  - dataset: selftest
+    seq: MH_00
+    gt: data/_selftest/euroc/MH_00/mav0/state_groundtruth_estimate0/data.csv
+    est: runs/synth/est.csv
+
+  # ---- EuRoC (uncomment once the data and your predictions exist) ---------
+  # - dataset: euroc
+  #   seq: MH_02_easy
+  #   gt: data/euroc/MH_02_easy/mav0/state_groundtruth_estimate0/data.csv
+  #   est: runs/baseline/MH_02_easy.csv
+  #
+  # - dataset: euroc
+  #   seq: MH_04_difficult
+  #   gt: data/euroc/MH_04_difficult/mav0/state_groundtruth_estimate0/data.csv
+  #   est: runs/baseline/MH_04_difficult.csv
+  #
+  # - dataset: euroc
+  #   seq: V1_01_easy
+  #   gt: data/euroc/V1_01_easy/mav0/state_groundtruth_estimate0/data.csv
+  #   est: runs/baseline/V1_01_easy.csv
+  #
+  # - dataset: euroc
+  #   seq: V1_03_difficult
+  #   gt: data/euroc/V1_03_difficult/mav0/state_groundtruth_estimate0/data.csv
+  #   est: runs/baseline/V1_03_difficult.csv
+  #
+  # - dataset: euroc
+  #   seq: V2_02_medium
+  #   gt: data/euroc/V2_02_medium/mav0/state_groundtruth_estimate0/data.csv
+  #   est: runs/baseline/V2_02_medium.csv
+
+  # ---- TLIO (35 h total; start with the 2-3 h subset) ---------------------
+  # - dataset: tlio
+  #   seq: tlio_subset
+  #   gt: data/tlio/subset/gt/data.csv
+  #   est: runs/baseline/tlio_subset.csv

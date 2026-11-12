@@ -1,0 +1,9 @@
+# Core evaluation only needs these two.
+numpy>=1.24
+pyyaml>=6.0
+
+# Only for --plot.
+matplotlib>=3.7
+
+# Only if you prefer pytest over tests/run_tests.py.
+# pytest>=7.0

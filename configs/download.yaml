@@ -1,0 +1,67 @@
+# Where to put the data.
+#
+# The public datasets sit behind consent forms / Google Drive folders, so there
+# is no stable direct URL to hard-code. Two supported workflows:
+#
+#   A) download in a browser, then ingest:
+#        python scripts/get_data.py --from-dir ~/Downloads --dest data/euroc
+#
+#   B) fill in `url` below and let the script fetch it:
+#        python scripts/get_data.py --list
+#        python scripts/get_data.py --download euroc/MH_02_easy
+#
+# Verify whatever you get with:
+#        python scripts/verify_data.py --root data/euroc --format euroc
+
+datasets:
+  - name: euroc/MH_02_easy
+    url:
+    sha256:
+    dest: data/euroc/MH_02_easy
+    note: ETH ASL EuRoC MAV; 5 sequences are used by SSIO
+
+  - name: euroc/MH_04_difficult
+    url:
+    sha256:
+    dest: data/euroc/MH_04_difficult
+
+  - name: euroc/V1_01_easy
+    url:
+    sha256:
+    dest: data/euroc/V1_01_easy
+
+  - name: euroc/V1_03_difficult
+    url:
+    sha256:
+    dest: data/euroc/V1_03_difficult
+
+  - name: euroc/V2_02_medium
+    url:
+    sha256:
+    dest: data/euroc/V2_02_medium
+
+  - name: tlio/subset
+    url:
+    sha256:
+    dest: data/tlio/subset
+    note: TLIO 25 h set; grab 2-3 h first, the full dump is ~200 GB
+
+  - name: blackbird
+    url:
+    sha256:
+    dest: data/blackbird
+    note: MIT-AERA racing drone; only needed in week 9
+
+# Expected on-disk layout (the loader walks these paths):
+#
+#   data/euroc/MH_02_easy/
+#     mav0/state_groundtruth_estimate0/data.csv   <- ground truth
+#     mav0/imu0/data.csv                          <- IMU
+#     mav0/cam0/data.csv                          <- camera timestamps
+#
+#   data/tlio/subset/
+#     gt/data.csv
+#     imu0/data.csv
+#
+# Anything else: point --est/--gt at the file directly, the reader sniffs the
+# header and falls back to `--gt-columns`-style overrides only if needed.

@@ -1,0 +1,30 @@
+# data (never commit datasets)
+data/
+!data/_selftest/
+
+# experiment outputs
+runs/
+!runs/.gitkeep
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# notebooks
+.ipynb_checkpoints/
+
+# local secrets
+.env
+*.pem

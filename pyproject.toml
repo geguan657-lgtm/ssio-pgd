@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ssio-eval"
+version = "0.1.0"
+description = "Odometry metrics (ATE / AVE / RPE) for the SSIO reproduction"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7"]
+dev = ["pytest>=7.0"]
+
+[project.scripts]
+ssio-eval = "ssio_eval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
