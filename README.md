@@ -1,7 +1,11 @@
 # ssio-pgd
 
-复现 **SSIO（arXiv:2610.25988）** 并修 PGD（位姿图蒸馏）的迭代退化。
-12 周计划见仓库外的 `SSIO-PGD-12周执行计划.md`。
+复现 **SSIO（[arXiv:2610.25988](https://arxiv.org/abs/2610.25988)）** 并修 PGD（位姿图蒸馏）的迭代退化。
+12 周计划见 [docs/PLAN.md](docs/PLAN.md)。
+
+> **这是复现脚手架，不是 SSIO 官方代码。**
+> 官方实现：[amazon-far/SSIO](https://github.com/amazon-far/SSIO) ｜ 项目主页：[ssio-imu.github.io](https://ssio-imu.github.io/)
+> 本仓库只包含评测、数据校验和实验记录模板，不含原作者的训练代码。
 
 本目录当前状态：**评测脚手架已就绪并通过自测**；SSIO 代码集成尚未开始（W1 的活）。
 
@@ -86,3 +90,7 @@ ssio-pgd/
 1. 读 `docs/DATA.md`，下 EuRoC 的 5 个序列；
 2. 读 `docs/METRICS.md`，知道每个数字的口径；
 3. 按 `weekly/W01.md` 做，W1 结束时你要能跑通官方 inference 并画出第一条轨迹。
+
+## License
+
+MIT — 见 [LICENSE](LICENSE)。评测代码可自由复用；论文与数据集的版权归各自作者。
