@@ -3,6 +3,31 @@
 > 冻结日期：____ ｜ commit/tag：`baseline-v0` ｜ 环境：python ___ / CUDA ___
 > 规则：W4 之后这张表里的数字**不再改动**。所有后续对比都以它为准。
 
+## 0. 数据集清单（2026-11-16 就位）
+
+官方 `robotics.ethz.ch` 已下线，数据改从 ETH Research Collection（DOI
+`10.3929/ethz-b-000690084`）的 bag 包里**内嵌的原始 zip** 获取，详见 `docs/DATA.md` §2.5。
+
+| 划分 | 序列 | 行数 | 时长 | 轨迹长 |
+|---|---|---|---|---|
+| **test** | MH_02_easy | 29 993 | 150.0 s | 73.5 m |
+| **test** | MH_04_difficult | 19 753 | 98.8 s | 91.7 m |
+| **test** | V1_01_easy | 28 712 | 143.6 s | 58.6 m |
+| **test** | V1_03_difficult | 20 932 | 104.7 s | 79.0 m |
+| **test** | V2_02_medium | 23 091 | 115.5 s | 83.2 m |
+| train | MH_01_easy | 36 382 | 181.9 s | 80.6 m |
+| train | MH_03_medium | 26 302 | 131.5 s | 130.9 m |
+| train | MH_05_difficult | 22 212 | 111.1 s | 97.6 m |
+| train | V1_02_medium | 16 702 | 83.5 s | 75.9 m |
+| train | V2_01_easy | 22 401 | 112.0 s | 36.5 m |
+| train | V2_03_difficult | 22 970 | 114.8 s | 86.1 m |
+
+**数据可信度验证**：解出的 `MH_02_easy` 与 SSIO 仓库自带切片
+`tests/fixtures/euroc_mh02_10s`（作者从同一 DOI 切的 10 秒样本）逐值比对，
+IMU（2000 行）和 GT（2100 行）**完全一致**。说明这份数据和作者用的是同一份。
+
+> 11 个序列的 CSV 合计只有 201 MB；24 GB 的原始 zip 里 99% 是相机图像，本项目一张都用不到。
+
 ## 1. 论文声称的值（待 PDF 核对）
 
 来源：公众号转录 + 项目主页，**必须对照 arXiv PDF 的 Table 2 逐个核实后再引用**。

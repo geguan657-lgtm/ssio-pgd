@@ -30,6 +30,68 @@ EuRoC 解压后本来就是这个结构（`mav0/...`），**不要改名**，直
 
 > 这些下载入口经常变（表单、网盘、注册）。**用浏览器下，再用 `scripts/get_data.py --from-dir` 导入**，比试图写死 URL 稳得多。
 
+## 2.5 2026-11 实测：官方数据现在只剩 bag 包，但里面藏着原始 zip
+
+这一条是踩了整整一轮才发现的，**记下来能省你一整天**。
+
+**现状**：`robotics.ethz.ch` 已下线（DNS 能解析，TCP 全超时）。官方数据迁到了
+ETH Research Collection（DOI [10.3929/ethz-b-000690084](https://doi.org/10.3929/ethz-b-000690084)），
+但那里只发布 4 个文件：
+
+```
+machine_hall.zip     12.7 GB
+vicon_room1.zip       6.0 GB
+vicon_room2.zip       6.0 GB
+calibration_datasets.zip  4.4 GB
+```
+
+**关键发现**：这三个大包里，每个序列目录下**同时**放了两样东西：
+
+```
+machine_hall/
+  MH_02_easy/
+    MH_02_easy.bag    2.2 GB   ← ROS bag，不是我们要的
+    MH_02_easy.zip    1.3 GB   ← 官方原始 mav0/ 结构，要的就是它
+```
+
+所以**不需要做 bag 转换**，直接解开内层 zip 即可。验证方法：解开后与 SSIO 仓库
+自带的 `tests/fixtures/euroc_mh02_10s`（作者从同一 DOI 切的 10 秒样本）逐值比对，
+IMU 和 GT **完全一致**。
+
+**操作**（PowerShell，只取 CSV/YAML，跳过 90% 体积的图像）：
+
+```powershell
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$outer = [System.IO.Compression.ZipFile]::OpenRead('machine_hall.zip')
+$entry = $outer.Entries | Where-Object { $_.FullName -eq 'machine_hall/MH_02_easy/MH_02_easy.zip' }
+[System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, 'MH_02_easy.zip', $true)
+$outer.Dispose()
+
+$z = [System.IO.Compression.ZipFile]::OpenRead('MH_02_easy.zip')
+foreach ($e in $z.Entries) {
+  if ($e.FullName -notmatch '\.(csv|yaml)$' -or $e.FullName.EndsWith('/')) { continue }
+  $t = Join-Path 'data\euroc\MH_02_easy' $e.FullName.Replace('/','\')
+  New-Item -ItemType Directory -Force -Path (Split-Path $t) | Out-Null
+  [System.IO.Compression.ZipFileExtensions]::ExtractToFile($e, $t, $true)
+}
+$z.Dispose()
+```
+
+每个序列解出 **11 个文件、约 8 MB**（图像在 zip 里但不解）。
+
+**下载**：官方站点在国内直连不通（Research Collection 会返回 429 / Access Restricted），
+用 HuggingFace 镜像 `GlowBond/EuRoC_MAV_Dataset`——**文件名和大小与官方完全一致**，
+是同一份文件的副本：
+
+```powershell
+powershell -File scripts\fetch_parallel.ps1 `
+  -Url 'https://hf-mirror.com/datasets/GlowBond/EuRoC_MAV_Dataset/resolve/main/machine_hall.zip' `
+  -Out data\raw\machine_hall.zip -Connections 4
+```
+
+> **并发数选 4，不要选 16。** 实测：4 连接 52 MB/s，16 连接被限速到接近 0。
+> 12.7 GB 大约 5 分钟；单连接只有 1–3 MB/s，要 3 小时。
+
 ## 3. 导入与校验
 
 ```powershell
